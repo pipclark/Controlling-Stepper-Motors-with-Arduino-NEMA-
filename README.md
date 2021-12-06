@@ -1,7 +1,7 @@
 # Controlling-Stepper-Motors-with-Arduino-NEMA-
-A python script and GUI for controlling stepper motors in 3 directions (XYZ) from an arduino (I was using nema 23 but it should work for others in general, maybe with some small changes)
+A python script and GUI for controlling 3 stepper motors in 3 directions (X, Y, Z) from an arduino (I was using nema 23 but it should work for others in general, maybe with some small changes).
 
-I used an Arduino uno with usb connection, using pyfirmata to control it from python, the arduino pins (details below) were fed into 3 DM542 microstep drivers (powered with 24 V power supplies), and the outputs from the drivers were connected to the NEMA23 stepper motors through 3x custom (5-pin) XLR cables (using 4 of the connections).
+I used an Arduino uno with usb connection, using pyfirmata to control it from python, the arduino pins (details below) were fed into 3 DM542 microstep drivers (powered with 24 V power supplies), and the outputs from the drivers were connected to the NEMA23 stepper motors through 3x custom (5-pin) XLR cables (using 4 of the connections). 
 
 For X, Y and Z directions I set up the pins as follows (but you can change it easily in the code)
 X
@@ -17,7 +17,7 @@ direction pin - 7
 pulse pin - 6
 enable pin - 10
 
-brief explanation of the functions
+brief explanation of the pin type functions:
 direction - high (5V) or low (0V) depending on whether you want to drive forwards or backwards
 pulse - pulses between high and low, the driver will then interpret this (depending on the driver settings) as e.g. 400 pulses need to rotate the stepper drive one full rotation. So if this pin goes high to low 400 times your driver will rotate 360 degrees in this example.
 enable pin - when high this will block the driver from taking action when recieving pulses. In the end I didn't experience much push back so I left this low all the time but you can edit to set it high and then only low when the move loop is activated if you experience unwanted movement.
@@ -26,5 +26,7 @@ The GUI is quite basic, made using tkinter. I recommend first time you run it pu
 
 There are a few places in the code where you will need to set things specific to your setup (the pins, driver and thread settings, and the file directory for storing positions between uses if you want this). 
 Elaborating on that last point, line 76, set a path to a folder you created called XYZ log. This will save the current XYZ positions (in a text file) if you close the GUI and load the most recent when you open the GUI.
+
+I usually ran the script from a batch file on the desktop so that noone would accidentally edit the code (.bat file example included too). For this to work for you change the first "" contents to your python path and the second to the script path.
 
 I'll upload some photos of the setup and a wiring diagram. I hope this is useful for someone else that is sick of trying to get labview to do what they want. Happy stepping!
