@@ -32,6 +32,8 @@ from tkinter import * #imports everything
 from tkinter.ttk import Frame, Button, Style
 import threading
   
+# set folder path where you want log files (of XYZ position) to be saved
+folder = r'P:\Pythonfiles\XYZlog'
 
 #%% Start connection 
 board = pyfirmata.Arduino('COM5') #use ardnuio ide to check COM port # of arduino
@@ -73,8 +75,11 @@ loops_missing = 0 #setting up i so it can be called globally later
 #%% Read XYZ positions from previous log file if available
 
 # SET THIS path to a folder you created called XYZ log. This will save the current XYZ positions if you close the GUI and load the most recent when you open the GUI
-list_of_files = glob.glob(r'C:\Users\local_admin\Documents\pyfirmata_arduinocode\XYZlog/*.txt') # * means all if need specific format then eg *.txt # change this to your folder path
-latest_file = max(list_of_files, key=os.path.getctime)
+list_of_files = glob.glob(folder+'/*.txt') # * means all if need specific format then eg *.txt # change this to your folder path
+try:
+    latest_file = max(list_of_files, key=os.path.getctime)
+except:
+    latest_file = ""
 
 if os.path.isfile(latest_file): #returns true if file exists
     #read in values from text file
@@ -395,7 +400,7 @@ class Application(tk.Frame):
     def close(self):
         #write a new file to save the xyz positions with date and time of closure as name        
         timestr = '/'+ time.strftime("%Y%m%d-%H%M%S") +".txt"
-        XYZlogfilepath = Path(r'C:\Users\local_admin\Documents\pyfirmata_arduinocode\XYZlog' + timestr)
+        XYZlogfilepath = Path(folder + timestr)
         f= open(XYZlogfilepath,"w+") #creates new txt file
         f.write("X position\n" +str(xpos) + "\nY position \n" + str(ypos) + "\nZ position \n" + str(zpos) +
                 "\nsafe X \n" + str(safex) + "\nsafe Y \n" + str(safey) + "\nsafe Z \n" + str(safez))
